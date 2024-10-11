@@ -12,27 +12,27 @@ struct Fecha {
 
 struct Persona {
     string DNI;
-    string nombres;
-    Fecha fechaNacimiento; 
+    string name;
+    Fecha FN; 
 };
-void mostrarPersonas(Persona personas[], int tam) {
+void mostrarPersonas(Persona PER[], int tam) {
     for (int i = 0; i < tam; i++) {
         cout << "Persona " << i + 1 << ":\n";
-        cout << "DNI: " << personas[i].DNI << endl;
-        cout << "Nombre: " << personas[i].nombres << endl;
-        cout << "Fecha de Nacimiento: " << personas[i].fechaNacimiento.dia << "/"
-             << personas[i].fechaNacimiento.mes << "/" << personas[i].fechaNacimiento.anio << endl;
+        cout << "DNI: " << PER[i].DNI << endl;
+        cout << "Nombre: " << PER[i].name << endl;
+        cout << "Fecha de Nacimiento: " << PER[i].FN.dia << "/"
+             << PER[i].FN.mes << "/" << PER[i].FN.anio << endl;
         cout << "-----------------------------\n";
     }
 }
-bool ComparaFechas(Persona PERSON[],Fecha  fecha,int i){
-	int cont=0;
+bool ComparaFechas(Persona PER[],Fecha  F,int i){
+	
 	int retorna=false;
-	if(PERSON[i].fechaNacimiento.anio>fecha.anio){
+	if(PER[i].FN.anio>F.anio){
 		retorna= true;
-	}else if(PERSON[i].fechaNacimiento.anio==fecha.anio&&PERSON[i].fechaNacimiento.mes>fecha.mes){
+	}else if(PER[i].FN.anio==F.anio&&PER[i].FN.mes>F.mes){
 		retorna=true;
-	}else if(PERSON[i].fechaNacimiento.anio==fecha.anio&&PERSON[i].fechaNacimiento.mes==fecha.mes&&PERSON[i].fechaNacimiento.dia>fecha.dia){
+	}else if(PER[i].FN.anio==F.anio&&PER[i].FN.mes==F.mes&&PER[i].FN.dia>F.dia){
 		retorna = true;
 	}
 		
@@ -40,47 +40,49 @@ bool ComparaFechas(Persona PERSON[],Fecha  fecha,int i){
 	
 	
 }
-void OrdenaArreglo(Persona PERSON[],Persona NUEVO[],int &n){
+void OrdenaArreglo(Persona PER[],Persona NEW[],int &n){
 	
 	int i=n;
-	Fecha AUX=NUEVO[0].fechaNacimiento;
+	Fecha F=NEW[0].FN;
 	if(n>0){
 		
-		while(i>=0 && ComparaFechas(PERSON,AUX,i)==true ){
-			PERSON[i+1]=PERSON[i];
+		while(i>=0 && ComparaFechas(PER,F,i)==true ){
+			PER[i+1]=PER[i];
 			i--;
 			
 		}
-		PERSON[i+1]=NUEVO[0];
+		PER[i+1]=NEW[0];
 		
 	}else{
-		PERSON[0]=NUEVO[0];
+		PER[0]=NEW[0];
 	}
 	n++;
 	
 	
 }
-void BusquedaBinaria(Persona PERSON[],Fecha f,int n){
+void  BusquedaBinaria(Persona PER[],Fecha F,int n){
 	int izq=0;
 	int der=n;
 	int cen=0;
 	int m;
 	while(izq<=der&& cen==0){
 		m=(izq+der)/2;
-		if(PERSON[m].fechaNacimiento.anio==f.anio&&PERSON[m].fechaNacimiento.mes==f.mes&&PERSON[m].fechaNacimiento.dia==f.dia){
+		if(PER[m].FN.anio==F.anio&&PER[m].FN.mes==F.mes&&PER[m].FN.dia==F.dia){
 			cen=1;
-		}else if(ComparaFechas(PERSON,f,m)==false){
+		}else if(ComparaFechas(PER,F,m)==false){
 			izq=m+1;
 		}else{
 			der=m-1;
 		}
 	}
+	
+	
 	if(cen==1){
 		cout << "Persona " << m + 1 << ":\n";
-        cout << "DNI: " << PERSON[m].DNI << endl;
-        cout << "Nombre: " << PERSON[m].nombres << endl;
-        cout << "Fecha de Nacimiento: " <<PERSON[m].fechaNacimiento.dia << "/"
-             << PERSON[m].fechaNacimiento.mes << "/" << PERSON[m].fechaNacimiento.anio << endl;
+        cout << "DNI: " << PER[m].DNI << endl;
+        cout << "Nombre: " << PER[m].name << endl;
+        cout << "Fecha de Nacimiento: " <<PER[m].FN.dia << "/"
+             << PER[m].FN.mes << "/" << PER[m].FN.anio << endl;
         cout << "-----------------------------\n";
     }else{
     	cout<<"La fecha no coincide con ningun dato del arreglo.\n";
@@ -93,8 +95,8 @@ void BusquedaBinaria(Persona PERSON[],Fecha f,int n){
 int main() {
     int cantper=0;
     int resp;
-    Persona PERSON[100];
-    Persona NUEVO[1];
+    Persona PER[100];
+    Persona NEW[1];
 	
 	do{
 	
@@ -106,24 +108,25 @@ int main() {
 	if(resp==1){
 		
 		cin.ignore();
-		cout<<"Nombre: ";getline(cin,NUEVO[0].nombres);
-		cout<<"DNI: ";getline(cin,NUEVO[0].DNI);
-		cout<<"Fecha de nacimiento: \n"<<"Dia: ";cin>>NUEVO[0].fechaNacimiento.dia;
-		cout<<"Mes: ";cin>>NUEVO[0].fechaNacimiento.mes;
-		cout<<"Anio: ";cin>>NUEVO[0].fechaNacimiento.anio;
+		cout<<"Nombre: ";getline(cin,NEW[0].name);
+		cout<<"DNI: ";getline(cin,NEW[0].DNI);
+		cout<<"Fecha de nacimiento: \n"<<"Dia: ";cin>>NEW[0].FN.dia;
+		cout<<"Mes: ";cin>>NEW[0].FN.mes;
+		cout<<"Anio: ";cin>>NEW[0].FN.anio;
 		
-		OrdenaArreglo(PERSON,NUEVO,cantper);
+		OrdenaArreglo(PER,NEW,cantper);
 		cout << "-------------------------------------------\n";
 	}else if(resp==2){
-		Fecha BUSCAR;
-		cout<<"Fecha de nacimiento: \n"<<"Dia: ";cin>>BUSCAR.dia;
-		cout<<"Mes: ";cin>>BUSCAR.mes;
-		cout<<"Anio";cin>>BUSCAR.anio;
-		BusquedaBinaria(PERSON,BUSCAR,cantper);
+		Fecha F;
+		cout<<"Fecha de nacimiento: \n"<<"Dia: ";cin>>F.dia;
+		cout<<"Mes: ";cin>>F.mes;
+		cout<<"Anio: ";cin>>F.anio;
+		BusquedaBinaria(PER,F,cantper);
 		cout << "-----------------------------------------\n";
     
-	}else if(resp==3){
-		mostrarPersonas(PERSON,cantper);
+	}
+	if(resp==3){
+		mostrarPersonas(PER,cantper);
 		cout << "---------------------------------------\n";
 	}
 	
